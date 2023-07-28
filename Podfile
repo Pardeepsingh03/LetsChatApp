@@ -15,5 +15,8 @@ target 'LetsChatApp' do
   target 'LetsChatAppUITests' do
     # Pods for testing
   end
+ pod 'Firebase/Auth'
+ pod 'Firebase/Core'
+ pod 'Firebase/Database' 
 
 end
