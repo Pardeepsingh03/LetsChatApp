@@ -44,13 +44,31 @@ class RegisterViewController: UIViewController,UIImagePickerControllerDelegate, 
         
         DatabaseManager.shared.isUserExist(with: email) { [weak self] exits in
             guard let strongSelf = self else {return}
-            guard !exits else{
+            if exits {
                 strongSelf.showAlert(messages: "Looks like there is a already usee exists on this email.")
                 return
             }
             Auth.auth().createUser(withEmail: email, password: pass) {authResult, error in
                 guard authResult != nil,error == nil else {return}
-                DatabaseManager.shared.insertUser(with: ChatAppUsers(firstName: firstName, lastName: lastName, email: email))
+                let chatUser = ChatAppUsers(firstName: firstName, lastName: lastName, email: email)
+                DatabaseManager.shared.insertUser(with: chatUser, completion:{ succes in
+                    if succes{
+//                        upload image
+                        guard let image = strongSelf.imageView.image,let data = image.pngData() else {
+                            return
+                        }
+                        let fileName = chatUser.profilePictureFileName
+                        StorageManager.shared.uplaodImage(with: data, fileName: fileName) { results in
+                            switch results{
+                            case .success(let downloadImage):
+                                UserDefaults.standard.set(downloadImage, forKey: "profile_picture")
+                                print(downloadImage)
+                            case .failure(let error):
+                                print(error)
+                            }
+                        }
+                    }
+                })
                 strongSelf.navigationController?.dismiss(animated: true)
             }
         }

@@ -18,5 +18,10 @@ target 'LetsChatApp' do
  pod 'Firebase/Auth'
  pod 'Firebase/Core'
  pod 'Firebase/Database' 
-
+ pod "FBSDKLoginKit"
+ pod 'GoogleSignIn'
+ pod 'MessageKit'
+ pod 'JGProgressHUD'
+ pod 'SDWebImage'
+ pod 'Firebase/Storage'  
 end
