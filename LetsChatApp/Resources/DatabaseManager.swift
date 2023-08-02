@@ -85,6 +85,116 @@ final class DatabaseManager{
         }
     }
 }
+
+extension DatabaseManager{
+    func createNewConversation(otherUserEmail: String,name: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
+        guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+        let safeEmail = DatabaseManager.safeEmail(email: currentEmail)
+        let ref = database.child("\(safeEmail)")
+        ref.observeSingleEvent(of: .value) { snapshot,_  in
+            guard var userNode = snapshot.value as? [String: Any] else {
+                completion(false)
+                return
+            }
+            
+            let senderDate = firstMessage.sentDate
+            let formatterDate = ChatViewController.dateFormater.string(from: senderDate)
+            let message = firstMessage.kind
+            var textMessage = ""
+            switch message {
+            case .text(let text):
+                textMessage = text
+                // Handle other message types if needed
+            default:
+                break
+            }
+            
+            let latestMessages: [String:Any] = [
+                "date": formatterDate,
+                "message": textMessage,
+                "is_read":false
+            ]
+            
+            let firstConvo = "conversation_\(firstMessage.messageId)"
+            let newConversation: [String: Any] = [
+                "id":firstConvo,
+                "other_user_email": otherUserEmail,
+                "name":name,
+                "latest_message": latestMessages
+            ]
+            
+            if var conversations = userNode["conversations"] as? [[String: Any]] {
+                conversations.append(newConversation)
+                userNode["conversations"] = conversations
+            } else {
+                userNode["conversations"] = [newConversation]
+            }
+            
+            ref.setValue(userNode) { error, _ in
+                if let error = error {
+                    print("Error saving conversation: \(error)")
+                    completion(false)
+                } else {
+                    
+                    self.finishCreatingConversation(conversationID: firstConvo, name:name, firstMessage: firstMessage, completion: completion)
+                }
+            }
+        }
+    }
+
+    func getAllConversation(email: String,completion: @escaping (Result<String,Error>) -> Void){
+        
+    }
+    func getAllMessagesForConversation(with id: String, completion: @escaping (Result<String,Error>) -> Void){
+        
+    }
+    func sendMessage(to conversation: String,message: Message,completion: @escaping (Bool) -> Void){
+        
+    }
+    
+    func finishCreatingConversation(conversationID: String,name:String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
+
+        guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+        let senderDate = firstMessage.sentDate
+        let formatterDate = ChatViewController.dateFormater.string(from: senderDate)
+        let message = firstMessage.kind
+        var textMessage = ""
+        switch message {
+        case .text(let text):
+            textMessage = text
+        // Handle other message types if needed
+        default:
+            break
+        }
+
+        let messagesCollection: [String: Any] = [
+            "id": firstMessage.messageId,
+            "type": firstMessage.kind.messageKindString, // Convert enum to String
+            "content": textMessage, // Use the textMessage variable instead of the enum directly
+            "date": formatterDate,
+            "sender_email": currentEmail,
+            "is_read": false,
+            "name":name
+        ]
+
+        let values: [String: Any] = [
+            "messages": [messagesCollection]
+        ]
+
+        database.child("\(conversationID)").setValue(values) { error, _ in
+            guard error == nil else {
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+}
+
 struct ChatAppUsers{
     var firstName: String
     var lastName: String
