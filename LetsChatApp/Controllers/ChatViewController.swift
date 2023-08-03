@@ -58,18 +58,25 @@ class ChatViewController: MessagesViewController {
         return formattre
     }()
     private let otherEmail: String
+    private var conversationID: String?
      var isNewConversation = false
     private var messages = [Message]()
  //   guard let email = UserDefaults.standard.value(forKey: "email") as? String else {return}
     private var sender: Sender?
     
-     init(other email: String) {
+    init(other email: String,id: String?) {
+        self.conversationID = id
         self.otherEmail = email
          guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
                    fatalError("User email not found in UserDefaults")
                }
-               self.sender = Sender(photoURL: "", senderId: email, displayName: "Joe")
-               super.init(nibName: nil, bundle: nil)
+        //let safeEmail = DatabaseManager.safeEmail(email: email)
+               self.sender = Sender(photoURL: "", senderId: email, displayName: "ME")
+        super.init(nibName: nil, bundle: nil)
+        if let getConversationID = conversationID {
+            self.listenForMessages(id: getConversationID)
+        }
+             
     }
     
     required init?(coder: NSCoder) {
@@ -83,6 +90,22 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
     
+    }
+    
+    private func listenForMessages(id: String){
+        DatabaseManager.shared.getAllMessagesForConversation(with: id) {[weak self] results in
+            switch results {
+                
+            case .success(let messages):
+                print(messages)
+                self?.messages = messages
+                DispatchQueue.main.async {
+                    self?.messagesCollectionView.reloadDataAndKeepOffset()
+                }
+            case .failure(let error):
+                print("Error in fetching messages : \(error)")
+            }
+        }
     }
 }
 

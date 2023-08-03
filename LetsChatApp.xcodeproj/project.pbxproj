@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0032D3172A728CC600DC9D40 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0032D3162A728CC500DC9D40 /* GoogleService-Info.plist */; };
 		0032D3192A7297C500DC9D40 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0032D3182A7297C500DC9D40 /* DatabaseManager.swift */; };
+		008983772A7A33420073CA0E /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008983762A7A33420073CA0E /* ConversationTableViewCell.swift */; };
 		00D6B2922A724DA2004DBAE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D6B2912A724DA2004DBAE5 /* AppDelegate.swift */; };
 		00D6B2942A724DA3004DBAE5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D6B2932A724DA3004DBAE5 /* SceneDelegate.swift */; };
 		00D6B2962A724DA3004DBAE5 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D6B2952A724DA3004DBAE5 /* ConversationViewController.swift */; };
@@ -51,6 +52,7 @@
 /* Begin PBXFileReference section */
 		0032D3162A728CC500DC9D40 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0032D3182A7297C500DC9D40 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		008983762A7A33420073CA0E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		00B0CC282A738BF7007410F2 /* LetsChatApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LetsChatApp.entitlements; sourceTree = "<group>"; };
 		00D6B28E2A724DA2004DBAE5 /* LetsChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LetsChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D6B2912A724DA2004DBAE5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			children = (
 				00D6B2C52A724EE7004DBAE5 /* Storyboards */,
 				00D6B29A2A724DA4004DBAE5 /* Assets.xcassets */,
+				008983762A7A33420073CA0E /* ConversationTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				00D6B2962A724DA3004DBAE5 /* ConversationViewController.swift in Sources */,
 				00D6B2CD2A7250CC004DBAE5 /* VideoPlayerViewController.swift in Sources */,
 				00D6B2922A724DA2004DBAE5 /* AppDelegate.swift in Sources */,
+				008983772A7A33420073CA0E /* ConversationTableViewCell.swift in Sources */,
 				00D6B2D12A72510A004DBAE5 /* ProfileViewViewController.swift in Sources */,
 				00D6B2942A724DA3004DBAE5 /* SceneDelegate.swift in Sources */,
 				00D6B2CB2A7250BB004DBAE5 /* PhotoViewerViewController.swift in Sources */,
